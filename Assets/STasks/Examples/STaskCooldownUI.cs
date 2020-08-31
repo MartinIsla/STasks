@@ -4,23 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class STaskCooldownUI : MonoBehaviour
+namespace STasks.Examples
 {
-    [SerializeField]
-    private Image _donutImage;
-
-    public void Show()
+    public class STaskCooldownUI : MonoBehaviour
     {
-        gameObject.SetActive(true);
-    }
+        [SerializeField]
+        private Image _donutImage;
 
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
 
-    public void SetProgress(float progress)
-    {
-        _donutImage.fillAmount = progress;
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void SetProgress(float progress)
+        {
+            _donutImage.fillAmount = progress;
+        }
     }
 }
