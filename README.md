@@ -4,7 +4,7 @@ STasks is a simple library that aims at replacing most common uses of coroutines
 
 ## Installation
 
-Import the STasks folder to your project and you're good to go.
+Import [the UnityPackage](https://github.com/MartinIsla/STasks/blob/master/STasks.unitypackage) into your project and you're good to go.
 
 ## Usage
 
