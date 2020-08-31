@@ -162,7 +162,7 @@ private void ExecuteAbility ()
 ```
 
 ## Contributing
-Pull requests are welcome, encouraged and begged for. I created STasks to warm up before a game jam.
+Pull requests are welcome, encouraged and begged for. I created STasks to warm up shortly before a game jam so the code quality isn't the best. Any readability improvements that don't affect performance are appreciated.
 
 ## License
 This project uses the MIT license. TLDR: feel free to use, copy, modify and redistribute STasks. Creditting me would be really, really nice but not a requirement. If you use STasks for bad things, it's your fault, not mine. Sending me a key to your game is greatly appreciated but the license says nothing about that.
