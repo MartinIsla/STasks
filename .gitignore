@@ -1,0 +1,49 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+.~lock.*csv*
+.~lock.*ods*
+
+Library/
+Temp/
+.vs/
+obj/
+Builds/
+
+
+fast_login.txt
+
+# ===========================
+# Default Collab Ignore Rules
+# ===========================
+
+# OS Generated
+# ============
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+[Dd]esktop.ini
+
+# Visual Studio / MonoDevelop generated
+# =====================================
+[Ee]xported[Oo]bj/
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+
+# Unity generated
+# ===============
+[Oo]bj/
+[Bb]uild
+sysinfo.txt
+*.stackdump
+.consulo/*
+.plastic
+ignore.conf
+repo.fe
