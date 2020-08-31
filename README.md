@@ -89,7 +89,7 @@ private void PlayCutscene ()
 {
     input.enabled = false;
     cutscene.Play();
-    STasks.DoWhen (action: () => input.enabled = true, condition: !cutscene.IsPlaying);
+    STasks.DoWhen (action: () => input.enabled = true, condition: () => !cutscene.IsPlaying);
 }
 ```
 
