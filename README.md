@@ -41,7 +41,7 @@ STasks.DoRepeating(() => Debug.Log("Do Something"), every: 3.0f, startAfter: 1.0
 ```
 >After one second, start printing "do something" every three seconds.
 
-### Perform a task repeatedly after a condition is met
+### Perform a task repeatedly until a condition is met
 Using coroutines, you can use loops to perform a task indefinitely after a certain condition is met.
 ```c#
 private IEnumerator TakeDamageSlowly () 
