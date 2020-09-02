@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace STasks
+namespace Koffie.SimpleTasks
 {
     public delegate void UpdateAction(float deltaTime);
 

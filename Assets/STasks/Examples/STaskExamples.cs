@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using STasks;
+﻿using UnityEngine;
 
-namespace STasks.Examples
+namespace Koffie.SimpleTasks.Examples
 {
     public class STaskExamples : MonoBehaviour
     {

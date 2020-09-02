@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace STasks
+﻿namespace Koffie.SimpleTasks
 {
     public class STask
     {
