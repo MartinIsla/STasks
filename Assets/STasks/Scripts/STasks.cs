@@ -37,7 +37,7 @@ namespace STasks
                 STask task = _currentTasks[i];
                 if (task != null)
                 {
-                    if (task.IsDone)
+                    if (!task.IsDone)
                     {
                         task.LateUpdate(deltaTime);
                     }
@@ -58,7 +58,7 @@ namespace STasks
                 STask task = _currentTasks[i];
                 if (task != null)
                 {
-                    if (task.IsDone)
+                    if (!task.IsDone)
                     {
                         task.Update(deltaTime);
                     }
