@@ -34,18 +34,17 @@ namespace STasks
 
             for (int i = 0; i < _currentTasks.Length; i++)
             {
-                if (_currentTasks[i] == null)
+                STask task = _currentTasks[i];
+                if (task != null)
                 {
-                    continue;
-                }
-
-                if (!_currentTasks[i].IsDone)
-                {
-                    _currentTasks[i].LateUpdate(deltaTime);
-                }
-                else
-                {
-                    _currentTasks[i] = null;
+                    if (task.IsDone)
+                    {
+                        task.LateUpdate(deltaTime);
+                    }
+                    else
+                    {
+                        _currentTasks[i] = null;
+                    }
                 }
             }
         }
@@ -56,18 +55,17 @@ namespace STasks
 
             for (int i = 0; i < _currentTasks.Length; i++)
             {
-                if (_currentTasks[i] == null)
+                STask task = _currentTasks[i];
+                if (task != null)
                 {
-                    continue;
-                }
-
-                if (!_currentTasks[i].IsDone)
-                {
-                    _currentTasks[i].Update(deltaTime);
-                }
-                else
-                {
-                    _currentTasks[i] = null;
+                    if (task.IsDone)
+                    {
+                        task.Update(deltaTime);
+                    }
+                    else
+                    {
+                        _currentTasks[i] = null;
+                    }
                 }
             }
         }
