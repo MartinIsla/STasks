@@ -61,7 +61,7 @@ namespace Koffie.SimpleTasks
 
         private void FixedUpdate()
         {
-            _onFixedUpdate?.Invoke(Time.deltaTime);
+            _onFixedUpdate?.Invoke(Time.fixedDeltaTime);
         }
     }
 }
