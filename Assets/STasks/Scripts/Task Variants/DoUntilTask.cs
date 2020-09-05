@@ -19,11 +19,7 @@
         {
             base.OnUpdate(deltaTime);
 
-            if (condition()) {
-              action.Invoke();
-            }
-            else
-            {
+            if (!condition()) {
                 Kill();
             }
         }
