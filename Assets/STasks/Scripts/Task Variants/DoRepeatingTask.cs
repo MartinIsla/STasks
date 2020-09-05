@@ -23,7 +23,7 @@
             if (_timeSinceLastLoop > frequency)
             {
                 action.Invoke();
-                _timeSinceLastLoop = 0;
+                _timeSinceLastLoop -= frequency;
             }
             else
             {
