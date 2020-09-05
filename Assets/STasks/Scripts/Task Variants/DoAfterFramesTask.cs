@@ -2,10 +2,10 @@
 {
     public class DoAfterFramesTask : STask
     {
-        public int ElapsedFrames => _elapedFrames;
+        public int ElapsedFrames => _elapsedFrames;
 
         private int _targetFrames;
-        private int _elapedFrames;
+        private int _elapsedFrames;
 
         public DoAfterFramesTask(STaskSettings settings) : base(settings)
         {
@@ -14,14 +14,14 @@
 
         protected override float GetProgress()
         {
-            return (float)_elapedFrames / _targetFrames;
+            return (float)_elapsedFrames / _targetFrames;
         }
 
         protected override void OnUpdate(float deltaTime)
         {
-            _elapedFrames++;
+            _elapsedFrames++;
 
-            if (_elapedFrames == _targetFrames)
+            if (_elapsedFrames >= _targetFrames)
             {
                 Complete();
             }
