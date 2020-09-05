@@ -39,7 +39,6 @@ namespace Koffie.SimpleTasks.Examples
 
             // Start losing lives when the game starts
             _loseLivesTask = STasks.DoUntil(LoseOneLife, () => _currentLives == 0, 1.0f).OnComplete(OnGameOver);
-
         }
 
         private void OnGameOver()

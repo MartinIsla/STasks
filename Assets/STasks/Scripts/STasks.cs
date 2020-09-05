@@ -15,59 +15,49 @@ namespace Koffie.SimpleTasks
 
     public static class STasks
     {
-        public const int MAX_CAPACITY = 256;
-        private static STask[] _currentTasks;
+        public const int UPDATE_INITIAL_CAPACITY = 64;
+        public const int LATEUPDATE_INITIAL_CAPACITY = 0;
+        public const int FIXEDUPDATE_INITIAL_CAPACITY = 0;
+
+        public const int MAX_CAPACITY = 2048;
+
+        private static STasksCollection _updateTasks;
+        private static STasksCollection _lateUpdateTasks;
+        private static STasksCollection _fixedUpdateTasks;
+
         private static bool _isPaused = false;
 
         [RuntimeInitializeOnLoadMethod]
         private static void Initialize()
         {
-            _isPaused = false;
-            _currentTasks = new STask[MAX_CAPACITY];
-            UpdateHelper.AddSubscriber(OnUpdate, UpdateHelper.UpdateType.Update);
-            UpdateHelper.AddSubscriber(OnLateUpdate, UpdateHelper.UpdateType.LateUpdate);
-        }
+            _updateTasks = new STasksCollection(UPDATE_INITIAL_CAPACITY, MAX_CAPACITY);
+            _lateUpdateTasks = new STasksCollection(LATEUPDATE_INITIAL_CAPACITY, MAX_CAPACITY);
+            _fixedUpdateTasks = new STasksCollection(FIXEDUPDATE_INITIAL_CAPACITY, MAX_CAPACITY);
 
-        private static void OnLateUpdate(float deltaTime)
-        {
-            if (_isPaused) { return; }
-
-            for (int i = 0; i < _currentTasks.Length; i++)
-            {
-                STask task = _currentTasks[i];
-                if (task != null)
-                {
-                    if (!task.IsDone)
-                    {
-                        task.LateUpdate(deltaTime);
-                    }
-                    else
-                    {
-                        _currentTasks[i] = null;
-                    }
-                }
-            }
+            UpdateHelper.AddSubscriber(OnUpdate, UpdateType.Update);
+            UpdateHelper.AddSubscriber(OnLateUpdate, UpdateType.LateUpdate);
+            UpdateHelper.AddSubscriber(OnFixedUpdate, UpdateType.FixedUpdate);
         }
 
         private static void OnUpdate(float deltaTime)
         {
             if (_isPaused) { return; }
 
-            for (int i = 0; i < _currentTasks.Length; i++)
-            {
-                STask task = _currentTasks[i];
-                if (task != null)
-                {
-                    if (!task.IsDone)
-                    {
-                        task.Update(deltaTime);
-                    }
-                    else
-                    {
-                        _currentTasks[i] = null;
-                    }
-                }
-            }
+            _updateTasks.Update(deltaTime);
+        }
+
+        private static void OnLateUpdate(float deltaTime)
+        {
+            if (_isPaused) { return; }
+
+            _lateUpdateTasks.Update(deltaTime);
+        }
+
+        private static void OnFixedUpdate(float fixedDeltaTime)
+        {
+            if (_isPaused) { return; }
+
+            _fixedUpdateTasks.Update(fixedDeltaTime);
         }
 
         /// <summary>
@@ -91,12 +81,18 @@ namespace Koffie.SimpleTasks
         /// </summary>
         /// <param name="action">The action to be executed</param>
         /// <param name="after">The time (in seconds) to wait before executing the task</param>
-        /// <param name="completeAfterLastFrame">Optional: If true, OnComplete will be called one frame after the action was executed</param>
+        /// <param name="updateType">Optional: The update method this task should use (Update/LateUpdate/FixedUpdate)</param>
         /// <returns>The STask. You can save this task to stop it before it's finished and to subscribe to events such us OnComplete</returns>
-        public static STask Do(SAction action, float after, bool completeAfterLastFrame = false)
+        public static DoTask Do(SAction action, float after, UpdateType updateType = UpdateType.Update)
         {
-            STask task = new STask(TaskType.Simple, action, after, completeAfterLastFrame: completeAfterLastFrame);
-            AddTask(task);
+            STaskSettings settings = new STaskSettings()
+            {
+                action = action,
+                delay = after,
+            };
+
+            DoTask task = new DoTask(settings);
+            AddTask(task, updateType);
             return task;
         }
 
@@ -106,12 +102,20 @@ namespace Koffie.SimpleTasks
         /// <param name="action">The action to be executed</param>
         /// <param name="every">The time (in seconds) to wait between executions</param>
         /// <param name="startAfter">Optional: The time (in seconds) to wait before starting the task</param>
-        /// <param name="useLateUpdate">Optional: If true, the task will be executed on LateUpdate instead of Update</param>
+        /// <param name="updateType">Optional: The update method this task should use (Update/LateUpdate/FixedUpdate)</param>
         /// <returns>The STask. You can save this task to stop it before it's finished and to subscribe to events such us OnComplete</returns>
-        public static STask DoRepeating(SAction action, float every, float startAfter = 0, bool useLateUpdate = false)
+        public static DoRepeatingTask DoRepeating(SAction action, float every, float startAfter = 0, float maxDuration = -1, UpdateType updateType = UpdateType.Update)
         {
-            STask task = new STask(TaskType.Looped, action, startAfter, null, every, useLateUpdate: useLateUpdate);
-            AddTask(task);
+            STaskSettings settings = new STaskSettings()
+            {
+                action = action,
+                frequency = every,
+                delay = startAfter,
+                maxDuration = maxDuration,
+            };
+
+            DoRepeatingTask task = new DoRepeatingTask(settings);
+            AddTask(task, updateType);
             return task;
         }
 
@@ -122,13 +126,22 @@ namespace Koffie.SimpleTasks
         /// <param name="condition">The condition for this task to stop</param>
         /// <param name="every">Optional: The time (in seconds) to wait between executions</param>
         /// <param name="startAfter">Optional: The time (in seconds) to wait before starting the task</param>
-        /// <param name="useLateUpdate">Optional: If true, the task will be executed on LateUpdate instead of Update</param>
+        /// <param name="updateType">Optional: The update method this task should use (Update/LateUpdate/FixedUpdate)</param>
         /// <param name="timeout">Optional: A maximum duration (in seconds) for this task. If set, the task will stop even if the condition isn't met. Note that the action won't be executed.</param>
         /// <returns>The STask. You can save this task to stop it before it's finished and to subscribe to events such us OnComplete</returns>
-        public static STask DoUntil(SAction action, SCondition condition, float every = 0, float startAfter = 0, bool useLateUpdate = false, float timeout = -1)
+        public static DoUntilTask DoUntil(SAction action, SCondition condition, float every = 0, float startAfter = 0, float timeout = -1, UpdateType updateType = UpdateType.Update)
         {
-            STask task = new STask(TaskType.Until, action, after: startAfter, condition, every, useLateUpdate: useLateUpdate, timeout: timeout);
-            AddTask(task);
+            STaskSettings settings = new STaskSettings()
+            {
+                action = action,
+                condition = condition,
+                frequency = every,
+                delay = startAfter,
+                maxDuration = timeout,
+            };
+
+            DoUntilTask task = new DoUntilTask(settings);
+            AddTask(task, updateType);
             return task;
         }
 
@@ -138,11 +151,19 @@ namespace Koffie.SimpleTasks
         /// <param name="action">The action to be executed</param>
         /// <param name="condition">The condition for this task to stop</param>
         /// <param name="startAfter">Optional: The time (in seconds) to wait before starting the task</param>
+        /// <param name="updateType">Optional: The update method this task should use (Update/LateUpdate/FixedUpdate)</param>
         /// <returns>The STask. You can save this task to stop it before it's finished and to subscribe to events such us OnComplete</returns>
-        public static STask DoWhen(SAction action, SCondition condition, float startAfter = 0)
+        public static DoWhenTask DoWhen(SAction action, SCondition condition, float startAfter = 0, UpdateType updateType = UpdateType.Update)
         {
-            STask task = new STask(TaskType.OnCondition, action, startAfter, condition);
-            AddTask(task);
+            STaskSettings settings = new STaskSettings()
+            {
+                action = action,
+                condition = condition,
+                delay = startAfter,
+            };
+
+            DoWhenTask task = new DoWhenTask(settings);
+            AddTask(task, updateType);
             return task;
         }
 
@@ -151,27 +172,37 @@ namespace Koffie.SimpleTasks
         /// </summary>
         /// <param name="action">The action to be executed</param>
         /// <param name="frames">The number of frames to wait</param>
+        /// <param name="startAfter">Optional: The time (in seconds) to wait before starting to count the frames</param>
+        /// <param name="updateType">Optional: The update method this task should use (Update/LateUpdate/FixedUpdate)</param>
         /// <returns>The STask. You can save this task to stop it before it's finished and to subscribe to events such us OnComplete</returns>
-        public static STask DoAfterFrames(SAction action, int frames)
+        public static DoAfterFramesTask DoAfterFrames(SAction action, int frames, float startAfter = 0, UpdateType updateType = UpdateType.Update)
         {
-            STask task = null;
-            task = new STask(TaskType.OnCondition, action, condition: () => task.ElapsedFrames == frames);
-            AddTask(task);
+            STaskSettings settings = new STaskSettings()
+            {
+                action = action,
+                targetFrames = frames,
+                delay = startAfter,
+            };
+
+            DoAfterFramesTask task = new DoAfterFramesTask(settings);
+            AddTask(task, updateType);
             return task;
         }
 
-        private static void AddTask(STask task)
+        private static void AddTask(STask task, UpdateType updateType)
         {
-            for (int i = 0; i < _currentTasks.Length; i++)
+            if (updateType == UpdateType.Update)
             {
-                if (_currentTasks[i] == null)
-                {
-                    _currentTasks[i] = task;
-                    return;
-                }
+                _updateTasks.AddTask(task);
             }
-
-            Debug.LogError("Max task capacity reached. What are you doing.");
+            else if (updateType == UpdateType.LateUpdate)
+            {
+                _lateUpdateTasks.AddTask(task);
+            }
+            else
+            {
+                _fixedUpdateTasks.AddTask(task);
+            }
         }
     }
 }

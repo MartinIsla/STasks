@@ -8,6 +8,7 @@ namespace Koffie.SimpleTasks.Examples
         private Camera _camera;
 
         private STask _randomizeCameraColorTask;
+        private Color _startColor;
 
         private void Start()
         {
@@ -18,7 +19,7 @@ namespace Koffie.SimpleTasks.Examples
         private void RandomizeCameraColorThreeTimes()
         {
             // Randomizes the color of the camera three times, with a 1.5 seconds wait between changes. 
-            
+            _startColor = _camera.backgroundColor;
             int timesRandomized = 0;
 
             // If we already have a task doing this, kill it
@@ -29,11 +30,11 @@ namespace Koffie.SimpleTasks.Examples
                     timesRandomized++;
                     _camera.backgroundColor = new Color(Random.value, Random.value, Random.value);
                 },
-                condition: () => timesRandomized == 3,
+                condition: () => timesRandomized > 3,
                 every: 1.5f);
 
-            // Resets the color to black on complete
-            _randomizeCameraColorTask.OnComplete(() => _camera.backgroundColor = Color.black);
+            // Reset the color on complete
+            _randomizeCameraColorTask.OnComplete(() => _camera.backgroundColor = _startColor);
         }
 
         private void PrintHelloWorldAfterThreeSeconds ()

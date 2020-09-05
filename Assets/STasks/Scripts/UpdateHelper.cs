@@ -4,14 +4,15 @@ namespace Koffie.SimpleTasks
 {
     public delegate void UpdateAction(float deltaTime);
 
+    public enum UpdateType
+    {
+        Update = 0,
+        LateUpdate,
+        FixedUpdate
+    }
+
     public class UpdateHelper : MonoBehaviour
     {
-        public enum UpdateType
-        {
-            Update = 0,
-            LateUpdate,
-            FixedUpdate
-        }
 
         private static UpdateHelper _instance;
 
@@ -23,7 +24,7 @@ namespace Koffie.SimpleTasks
         {
             ValidateInstance();
 
-            switch (updateType) 
+            switch (updateType)
             {
                 case UpdateType.Update:
                     _onUpdate += action;
