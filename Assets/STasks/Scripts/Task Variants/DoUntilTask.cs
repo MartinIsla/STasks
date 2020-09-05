@@ -8,14 +8,23 @@
         {
             condition = settings.condition;
         }
+        
+        protected override float GetProgress()
+        {
+            Debug.LogWarning($"{nameof(DoUntilTask)} can't keep track of the progress, you'll need to write your own implementation for this. Returning -1.");
+            return -1;
+        }
 
         protected override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
 
-            if (condition())
+            if (condition()) {
+              action.Invoke();
+            }
+            else
             {
-                Complete();
+                Kill();
             }
         }
     }
