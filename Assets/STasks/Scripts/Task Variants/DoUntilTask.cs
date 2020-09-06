@@ -4,13 +4,13 @@ namespace Koffie.SimpleTasks
 {
     public class DoUntilTask : DoRepeatingTask
     {
-        private SCondition condition;
+        private readonly SCondition _condition;
 
         public DoUntilTask(STaskSettings settings) : base(settings)
         {
-            condition = settings.condition;
+            _condition = settings.condition;
         }
-        
+
         protected override float GetProgress()
         {
             Debug.LogWarning($"{nameof(DoUntilTask)} can't keep track of the progress, you'll need to write your own implementation for this. Returning -1.");
@@ -21,9 +21,9 @@ namespace Koffie.SimpleTasks
         {
             base.OnUpdate(deltaTime);
 
-            if (!condition()) 
+            if (_condition())
             {
-                Kill();
+                Complete();
             }
         }
     }
