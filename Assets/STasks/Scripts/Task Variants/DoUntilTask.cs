@@ -21,7 +21,8 @@ namespace Koffie.SimpleTasks
         {
             base.OnUpdate(deltaTime);
 
-            if (!condition()) {
+            if (!condition()) 
+            {
                 Kill();
             }
         }
