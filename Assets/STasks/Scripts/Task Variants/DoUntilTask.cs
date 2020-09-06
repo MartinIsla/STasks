@@ -1,4 +1,6 @@
-﻿namespace Koffie.SimpleTasks
+﻿using UnityEngine;
+
+namespace Koffie.SimpleTasks
 {
     public class DoUntilTask : DoRepeatingTask
     {
