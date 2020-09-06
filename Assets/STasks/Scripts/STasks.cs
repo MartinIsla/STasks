@@ -19,8 +19,6 @@ namespace Koffie.SimpleTasks
         public const int LATEUPDATE_INITIAL_CAPACITY = 0;
         public const int FIXEDUPDATE_INITIAL_CAPACITY = 0;
 
-        public const int MAX_CAPACITY = 2048;
-
         private static STasksCollection _updateTasks;
         private static STasksCollection _lateUpdateTasks;
         private static STasksCollection _fixedUpdateTasks;
@@ -30,9 +28,9 @@ namespace Koffie.SimpleTasks
         [RuntimeInitializeOnLoadMethod]
         private static void Initialize()
         {
-            _updateTasks = new STasksCollection(UPDATE_INITIAL_CAPACITY, MAX_CAPACITY);
-            _lateUpdateTasks = new STasksCollection(LATEUPDATE_INITIAL_CAPACITY, MAX_CAPACITY);
-            _fixedUpdateTasks = new STasksCollection(FIXEDUPDATE_INITIAL_CAPACITY, MAX_CAPACITY);
+            _updateTasks = new STasksCollection(UPDATE_INITIAL_CAPACITY);
+            _lateUpdateTasks = new STasksCollection(LATEUPDATE_INITIAL_CAPACITY);
+            _fixedUpdateTasks = new STasksCollection(FIXEDUPDATE_INITIAL_CAPACITY);
 
             UpdateHelper.AddSubscriber(OnUpdate, UpdateType.Update);
             UpdateHelper.AddSubscriber(OnLateUpdate, UpdateType.LateUpdate);

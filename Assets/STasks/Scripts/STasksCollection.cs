@@ -1,72 +1,48 @@
-﻿using System;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace Koffie.SimpleTasks
 {
     public class STasksCollection
-    {        
-        public STask[] tasks;
+    {
+        private List<STask> tasks;
 
-        private int _tasksAdded;
-
-        private readonly int initialSize;
-        private readonly int maxSize;
-
-        public STasksCollection(int initialSize, int maxSize)
+        public STasksCollection(int initialSize)
         {
-            this.initialSize = initialSize;
-            this.maxSize = maxSize;
-            
-            tasks = new STask[initialSize];
+            tasks = new List<STask>(initialSize);
         }
 
-        public void Update (float deltaTime)
+        public void Update(float deltaTime)
         {
-            for (int i = 0; i < tasks.Length; i++)
+            for (int i = 0; i < tasks.Count; i++)
             {
                 STask task = tasks[i];
-                if (task != null)
+                while (task.isDone && i < tasks.Count)
                 {
-                    if (!task.isDone)
-                    {
-                        task.Update(deltaTime);
-                    }
-                    else
-                    {
-                        tasks[i] = null;
-                    }
+                    task = tasks[i] = tasks[tasks.Count - 1];
+                    tasks.RemoveAt(tasks.Count - 1);
+                }
+
+                if (!task.isDone)
+                {
+                    task.Update(deltaTime);
                 }
             }
         }
 
         public void AddTask(STask task)
         {
-            if (_tasksAdded == tasks.Length)
-            {
-                IncreaseArraySize();
-            }
-
-            for (int i = 0; i < tasks.Length; i++)
-            {
-                if (tasks[i] == null)
-                {
-                    tasks[i] = task;
-                    _tasksAdded++;
-                    return;
-                }
-            }
+            tasks.Add(task);
         }
 
-        private void IncreaseArraySize()
+        public void RemoveTask(STask task)
         {
-            if (tasks.Length == maxSize)
-            {
-                Debug.LogError($"For your own safety, we can't increase the STasks capacity because you already created {maxSize} tasks. If you know what you're doing, you can increase MAX_CAPACITY in STasks.cs, but keep an eye on your performance.");
-                return;
-            }
+            int index = tasks.IndexOf(task);
 
-            int newCapacity = Mathf.Min(tasks.Length + initialSize, maxSize);
-            Array.Resize(ref tasks, newCapacity);
+            if (index >= 0)
+            {
+                tasks[index] = tasks[tasks.Count - 1];
+                tasks.RemoveAt(tasks.Count - 1);
+            }
         }
     }
 
