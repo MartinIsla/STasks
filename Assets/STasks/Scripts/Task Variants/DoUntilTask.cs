@@ -23,7 +23,8 @@ namespace Koffie.SimpleTasks
 
             if (_condition())
             {
-                Complete();
+                Kill();
+                onComplete?.Invoke();
             }
         }
     }
