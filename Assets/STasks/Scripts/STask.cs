@@ -109,8 +109,10 @@
                 {
                     Kill();
                 }
-
-                OnUpdate(deltaTime);
+                else
+                {
+                    OnUpdate(deltaTime);
+                }
             }
 
             _elapsedTime += deltaTime;
