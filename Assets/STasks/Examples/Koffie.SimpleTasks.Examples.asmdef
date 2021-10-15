@@ -1,0 +1,16 @@
+{
+    "name": "Koffie.SimpleTasks.Examples",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b2b74bea20f643446bd5c9ac75b9b0aa"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
