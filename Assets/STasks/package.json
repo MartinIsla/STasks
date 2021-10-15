@@ -1,0 +1,14 @@
+{
+    "name": "com.martinisla.stasks",
+    "displayName": "STasks",
+    "version": "2.1.0",
+    "unity": "2018.4",
+    "description": "A simple library that aims at replacing most common uses of coroutines. It's easy to use, faster to write and performance-first.",
+    "documentationUrl": "https://github.com/MartinIsla/STasks/",
+    "author": {
+      "name": "Martin Isla",
+      "email": "mmartin.isla@gmail.com",
+      "url": "https://github.com/MartinIsla/"
+    },
+    "type": "library"
+  }
