@@ -3,8 +3,17 @@
 STasks is a simple library that aims at replacing most common uses of coroutines. It's easy to use, faster to write and performance-first.
 
 ## Installation
+### Package Manager (recommended)
+In Unity, go to `Window -> Package Manager` to open the Package Manager.
+Click the little `+` button at the top-left corner, select `Add package from git URL` and paste the following URL 
+```
+https://github.com/MartinIsla/STasks.git?path=Assets/STasks/
+```
+Click the `Add` button and wait.
 
-Import [the UnityPackage](https://github.com/MartinIsla/STasks/blob/master/STasks.unitypackage) into your project and you're good to go.
+### Importing as a UnityPackage
+
+Download [the UnityPackage](https://github.com/MartinIsla/STasks/blob/master/STasks.unitypackage) and import it into your project.
 
 ## Usage
 
@@ -34,7 +43,7 @@ InvokeRepeating("PrintDoSomething", 1.0f, 3.0f);
 ```
 >After one second, start printing "do something" every three seconds.
 
-The biggest problem with this is the method has to be passed as a string, meaning that the method isn't tracked. Using STasks, you can use `STasks.DoRepeating(action, every, startAfter)`. 
+Using STasks, you can use `STasks.DoRepeating(action, every, startAfter)`. 
 
 ```c#
 STasks.DoRepeating(() => Debug.Log("Do Something"), every: 3.0f, startAfter: 1.0f);
@@ -61,7 +70,7 @@ With STasks, you can do this using `STasks.DoUntil(action, condition, every)`
 int currentLives = 10;
 STasks.DoUntil(action: () => currentLives--, condition: () => currentLives == 0, every: 1.0f);
 ```
-Please note the "every" parameter is optional. It has a value of 0 by default, meaning the action will be executed every frame.
+Please note the `every` parameter is optional. It has a value of 0 by default, meaning the action will be executed every frame.
 
 ### Perform a task when a condition is met
 Coroutines can also be used to wait until a certain condition is met before executing a task.
@@ -100,7 +109,7 @@ The most common usage for this is manually killing the task. There are cases whe
 
 Let's take our previous example where we took a life from the player once per second:
 ```c#
-int currentLives = 10;
+private int currentLives = 10;
 private void StartTakingLivesFromPlayer () 
 {
     STasks.DoUntil(action: () => currentLives--, condition: () => currentLives == 0, every: 1.0f);
@@ -109,8 +118,8 @@ private void StartTakingLivesFromPlayer ()
 If `StartTakingLivesFromPlayer()` is called again before the task is complete, we'll have two different tasks taking lives from the player at the same time. The player will be sad, confused and frustrated. To avoid this, let's save the task.
 
 ```c#
-STask takeLivesFromPlayerTask;
-int currentLives = 10;
+private STask takeLivesFromPlayerTask;
+private int currentLives = 10;
 
 private void StartTakingLivesFromPlayer () 
 {
@@ -122,7 +131,7 @@ private void StartTakingLivesFromPlayer ()
 }
 
 ```
-Alternatively, we could stop a new task from being created if we already have one by checking if it's null.
+Alternatively, we could stop a new task from being created if we already have one by checking if `takeLivesFromPlayerTask` is not null.
 
 
 ### STask callbacks
@@ -161,10 +170,11 @@ private void ExecuteAbility ()
 }
 ```
 
+
 ## Contributing
-Pull requests are welcome, encouraged and begged for. I created STasks to warm up shortly before a game jam so the code quality isn't the best. Any readability improvements that don't affect performance are appreciated.
+Whether it's new task variants, performance or quality of life improvements, better examples or whatever you think would improve STasks is welcome. Pull requests are encouraged and begged for. 
 
 ## License
-This project uses the MIT license. TLDR: feel free to use, copy, modify and redistribute STasks. Creditting me would be really, really nice but not a requirement. If you use STasks for bad things, it's your fault, not mine. Sending me a key to your game is greatly appreciated but the license says nothing about that.
+This project uses the MIT license. TLDR: feel free to use, copy, modify and redistribute STasks. Creditting me would be really, really nice but not a requirement. If you use STasks for bad things it's your fault, not mine. Sending me a key to your game is greatly appreciated but the license says nothing about that.
 
 [Full details here](https://github.com/MartinIsla/stasks/blob/master/LICENSE).
