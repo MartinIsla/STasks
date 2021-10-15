@@ -47,3 +47,8 @@ sysinfo.txt
 .plastic
 ignore.conf
 repo.fe
+ProjectSettings
+Packages
+Logs
+UserSettings
+*.vsconfig
