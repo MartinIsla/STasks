@@ -3,17 +3,19 @@
 STasks is a simple library that aims at replacing most common uses of coroutines. It's easy to use, faster to write and performance-first.
 
 ## Installation
-### Package Manager (recommended)
+### Importing as a UnityPackage (recommended)
+
+Download [the UnityPackage](https://github.com/MartinIsla/STasks/blob/master/STasks.unitypackage) and import it into your project.
+
+### Package Manager
+First, make sure you have installed Git. If you haven't, you can download it from [the official website](https://www.git-scm.com/download/).
+
 In Unity, go to `Window -> Package Manager` to open the Package Manager.
 Click the little `+` button at the top-left corner, select `Add package from git URL` and paste the following URL 
 ```
 https://github.com/MartinIsla/STasks.git?path=Assets/STasks/
 ```
 Click the `Add` button and wait.
-
-### Importing as a UnityPackage
-
-Download [the UnityPackage](https://github.com/MartinIsla/STasks/blob/master/STasks.unitypackage) and import it into your project.
 
 ## Usage
 
