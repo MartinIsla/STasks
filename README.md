@@ -7,7 +7,12 @@ STasks is a simple library that aims at replacing most common uses of coroutines
 
 Download [the UnityPackage](https://github.com/MartinIsla/STasks/blob/master/STasks.unitypackage) and import it into your project.
 
-### Package Manager
+### Package Manager (not recommended, really)
+> I added this option and now I regret it. It makes collaboration hard because all your teammates need to have Git installed, which is pretty unusual for non-programmer teammates. And even for programmers, Git's system PATH can break.
+
+> Also, by importing STasks as a package, you can't change the code if you want to fix bugs or add new types of tasks, which would be happily received by me :)
+Anyway, I strongly suggest you don't use this method.
+
 First, make sure you have installed Git. If you haven't, you can download it from [the official website](https://www.git-scm.com/download/).
 
 In Unity, go to `Window -> Package Manager` to open the Package Manager.
