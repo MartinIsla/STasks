@@ -25,9 +25,20 @@ namespace Koffie.SimpleTasks
 
         private static bool _isPaused = false;
 
+        private static bool _isInitialized;
+
+        static STasks()
+        {
+            if (!_isInitialized)
+                Initialize();
+        }
+
         [RuntimeInitializeOnLoadMethod]
         private static void Initialize()
         {
+            if (_isInitialized)
+                return;
+
             _updateTasks = new STasksCollection(UPDATE_INITIAL_CAPACITY);
             _lateUpdateTasks = new STasksCollection(LATEUPDATE_INITIAL_CAPACITY);
             _fixedUpdateTasks = new STasksCollection(FIXEDUPDATE_INITIAL_CAPACITY);
@@ -35,6 +46,8 @@ namespace Koffie.SimpleTasks
             UpdateHelper.AddSubscriber(OnUpdate, UpdateType.Update);
             UpdateHelper.AddSubscriber(OnLateUpdate, UpdateType.LateUpdate);
             UpdateHelper.AddSubscriber(OnFixedUpdate, UpdateType.FixedUpdate);
+
+            _isInitialized = true;
         }
 
         private static void OnUpdate(float deltaTime)
