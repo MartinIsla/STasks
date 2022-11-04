@@ -2,9 +2,7 @@
  * Press SPACE to start executing a task with the current settings
  * Press ESCAPE to kill the current task while it's running
  * Press UP/DOWN ARROWS to increase/decrease the value of the iteration variable (useful for testing conditional tasks) */
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Koffie.SimpleTasks.Examples
 {
@@ -19,7 +17,7 @@ namespace Koffie.SimpleTasks.Examples
             Until,
             AfterFrames
         }
-        
+
 
         [Tooltip("Whether to execute a task with the current settings when entering play mode")]
         public bool autoExecuteOnStart = true;
@@ -105,12 +103,12 @@ namespace Koffie.SimpleTasks.Examples
             _currentTask.OnComplete(() =>
             {
                 Debug.Log($"{taskName} completed after {currentIteration} iterations. Time since started: {_currentTask.TimeSinceStart.ToString("0.00")} seconds");
-                
+
                 if (restartTaskOnComplete)
                     ExecuteTaskWithCurrentSettings();
             });
             _currentTask.OnKill(() => Debug.Log($"{taskName} killed after {currentIteration} iterations. Time since created: {_currentTask.ElapsedTime.ToString("0.00")} seconds"));
-            _currentTask.OnTimeout(() => Debug.Log($"{taskName} timed out after {currentIteration} iterations"));            
+            _currentTask.OnTimeout(() => Debug.Log($"{taskName} timed out after {currentIteration} iterations"));
         }
 
         private void Update()

@@ -37,7 +37,7 @@ namespace Koffie.SimpleTasks.Examples
             _randomizeCameraColorTask.OnComplete(() => _camera.backgroundColor = _startColor);
         }
 
-        private void PrintHelloWorldAfterThreeSeconds ()
+        private void PrintHelloWorldAfterThreeSeconds()
         {
             // Print "hello world" after three seconds
             STasks.Do(() => Debug.Log("Hello world!"), after: 3.0f);

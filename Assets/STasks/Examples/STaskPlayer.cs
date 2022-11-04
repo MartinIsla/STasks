@@ -19,7 +19,7 @@ namespace Koffie.SimpleTasks.Examples
         [SerializeField]
         private float _healingCooldown;
 
-        private int _currentLives;        
+        private int _currentLives;
         private bool _canExecuteHealingAbility;
 
         private SpriteRenderer _renderer;
