@@ -54,21 +54,24 @@ namespace Koffie.SimpleTasks
         {
             if (_isPaused) { return; }
 
-            _updateTasks.Update(deltaTime);
+            STask.deltaTime = deltaTime;
+            _updateTasks.Update();
         }
 
         private static void OnLateUpdate(float deltaTime)
         {
             if (_isPaused) { return; }
 
-            _lateUpdateTasks.Update(deltaTime);
+            STask.deltaTime = deltaTime;
+            _lateUpdateTasks.Update();
         }
 
         private static void OnFixedUpdate(float fixedDeltaTime)
         {
             if (_isPaused) { return; }
 
-            _fixedUpdateTasks.Update(fixedDeltaTime);
+            STask.fixedDeltaTime = fixedDeltaTime;
+            _fixedUpdateTasks.Update();
         }
 
         /// <summary>
@@ -131,6 +134,25 @@ namespace Koffie.SimpleTasks
         }
 
         /// <summary>
+        /// Performs a given action a fixed number of times (unless a max duration is set)
+        /// </summary>
+        /// <param name="action">The action to be executed</param>
+        /// <param name="times">The number of times to execute this task</param>
+        /// <param name="every">Optional: The time (in seconds) to wait between executions</param>
+        /// <param name="startAfter">Optional: The time (in seconds) to wait before starting the task</param>
+        /// <param name="maxDuration">Optional: A maximum duration (in seconds) for this task. If set, the task will stop even if the condition isn't met. Note that the action won't be executed.</param>
+        /// <param name="updateType">Optional: The update method this task should use (Update/LateUpdate/FixedUpdate)</param>
+        /// <returns>The STask. You can save this task to stop it before it's finished and to subscribe to events such us OnComplete</returns>
+        public static DoUntilTask DoTimes(SAction action, int times, float every = 0, float startAfter = 0, float maxDuration = 0, UpdateType updateType = UpdateType.Update)
+        {
+            int elapsedLoops = 0;
+            SCondition condition = () => elapsedLoops >= times;
+            action += () => elapsedLoops++;
+
+            return DoUntil(action, condition, every, startAfter, maxDuration, updateType);
+        }
+
+        /// <summary>
         /// Performs a task until a condition is met
         /// </summary>
         /// <param name="action">The action to be executed</param>
@@ -138,9 +160,9 @@ namespace Koffie.SimpleTasks
         /// <param name="every">Optional: The time (in seconds) to wait between executions</param>
         /// <param name="startAfter">Optional: The time (in seconds) to wait before starting the task</param>
         /// <param name="updateType">Optional: The update method this task should use (Update/LateUpdate/FixedUpdate)</param>
-        /// <param name="timeout">Optional: A maximum duration (in seconds) for this task. If set, the task will stop even if the condition isn't met. Note that the action won't be executed.</param>
+        /// <param name="maxDuration">Optional: A maximum duration (in seconds) for this task. If set, the task will stop even if the condition isn't met. Note that the action won't be executed.</param>
         /// <returns>The STask. You can save this task to stop it before it's finished and to subscribe to events such us OnComplete</returns>
-        public static DoUntilTask DoUntil(SAction action, SCondition condition, float every = 0, float startAfter = 0, float timeout = -1, UpdateType updateType = UpdateType.Update)
+        public static DoUntilTask DoUntil(SAction action, SCondition condition, float every = 0, float startAfter = 0, float maxDuration = -1, UpdateType updateType = UpdateType.Update)
         {
             STaskSettings settings = new STaskSettings()
             {
@@ -148,7 +170,7 @@ namespace Koffie.SimpleTasks
                 condition = condition,
                 frequency = every,
                 delay = startAfter,
-                maxDuration = timeout,
+                maxDuration = maxDuration,
             };
 
             DoUntilTask task = new DoUntilTask(settings);

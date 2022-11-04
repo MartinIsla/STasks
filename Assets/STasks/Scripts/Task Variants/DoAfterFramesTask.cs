@@ -7,7 +7,7 @@
         private int _targetFrames;
         private int _elapsedFrames;
 
-        public DoAfterFramesTask(STaskSettings settings) : base(settings)
+        public DoAfterFramesTask(in STaskSettings settings) : base(settings)
         {
             _targetFrames = settings.targetFrames;
         }
@@ -17,7 +17,7 @@
             return (float)_elapsedFrames / _targetFrames;
         }
 
-        protected override void OnUpdate(float deltaTime)
+        protected override void OnUpdate()
         {
             _elapsedFrames++;
 

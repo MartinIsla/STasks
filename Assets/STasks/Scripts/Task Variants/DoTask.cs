@@ -2,14 +2,14 @@
 {
     public class DoTask : STask
     {
-        public DoTask(STaskSettings settings) : base(settings) { }
+        public DoTask(in STaskSettings settings) : base(settings) { }
 
         protected override float GetProgress()
         {
             return ElapsedTime / Delay;
         }
 
-        protected override void OnUpdate(float deltaTime)
+        protected override void OnUpdate()
         {
             if (ElapsedTime > Delay)
             {

@@ -6,7 +6,7 @@ namespace Koffie.SimpleTasks
     {
         public SCondition condition;
 
-        public DoWhenTask(STaskSettings settings) : base(settings)
+        public DoWhenTask(in STaskSettings settings) : base(settings)
         {
             this.condition = settings.condition;
         }
@@ -17,7 +17,7 @@ namespace Koffie.SimpleTasks
             return -1;
         }
 
-        protected override void OnUpdate(float deltaTime)
+        protected override void OnUpdate()
         {
             if (condition())
             {

@@ -6,9 +6,15 @@ namespace Koffie.SimpleTasks
     {
         private readonly SCondition _condition;
 
-        public DoUntilTask(STaskSettings settings) : base(settings)
+        public DoUntilTask(in STaskSettings settings) : base(settings)
         {
             _condition = settings.condition;
+        }
+
+        protected override void OnTimeout()
+        {
+            onTimeout?.Invoke();
+            isDone = true;
         }
 
         protected override float GetProgress()
@@ -17,14 +23,13 @@ namespace Koffie.SimpleTasks
             return -1;
         }
 
-        protected override void OnUpdate(float deltaTime)
+        protected override void OnUpdate()
         {
-            base.OnUpdate(deltaTime);
+            base.OnUpdate();
 
             if (_condition())
             {
-                Kill();
-                onComplete?.Invoke();
+                Complete();
             }
         }
     }

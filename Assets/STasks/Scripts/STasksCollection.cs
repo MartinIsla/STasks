@@ -11,7 +11,7 @@ namespace Koffie.SimpleTasks
             tasks = new List<STask>(initialSize);
         }
 
-        public void Update(float deltaTime)
+        public void Update()
         {
             for (int i = 0; i < tasks.Count; i++)
             {
@@ -24,7 +24,7 @@ namespace Koffie.SimpleTasks
 
                 if (!task.isDone)
                 {
-                    task.Update(deltaTime);
+                    task.Update();
                 }
             }
         }
