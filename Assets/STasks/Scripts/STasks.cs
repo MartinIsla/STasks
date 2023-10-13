@@ -74,6 +74,11 @@ namespace Koffie.SimpleTasks
             _fixedUpdateTasks.Update();
         }
 
+        internal static void AddTask(STask task)
+        {
+            AddTask(task, task.UpdateType);
+        }
+
         /// <summary>
         /// Pauses all the tasks
         /// </summary>
@@ -103,6 +108,7 @@ namespace Koffie.SimpleTasks
             {
                 action = action,
                 delay = after,
+                updateType = updateType
             };
 
             DoTask task = new DoTask(settings);
@@ -126,6 +132,7 @@ namespace Koffie.SimpleTasks
                 frequency = every,
                 delay = startAfter,
                 maxDuration = maxDuration,
+                updateType = updateType
             };
 
             DoRepeatingTask task = new DoRepeatingTask(settings);
@@ -171,6 +178,7 @@ namespace Koffie.SimpleTasks
                 frequency = every,
                 delay = startAfter,
                 maxDuration = maxDuration,
+                updateType = updateType
             };
 
             DoUntilTask task = new DoUntilTask(settings);
@@ -193,6 +201,7 @@ namespace Koffie.SimpleTasks
                 action = action,
                 condition = condition,
                 delay = startAfter,
+                updateType = updateType
             };
 
             DoWhenTask task = new DoWhenTask(settings);
@@ -215,6 +224,7 @@ namespace Koffie.SimpleTasks
                 action = action,
                 targetFrames = frames,
                 delay = startAfter,
+                updateType = updateType
             };
 
             DoAfterFramesTask task = new DoAfterFramesTask(settings);

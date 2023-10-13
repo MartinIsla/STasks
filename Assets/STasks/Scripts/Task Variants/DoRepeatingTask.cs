@@ -12,6 +12,12 @@
             _timeSinceLastLoop = 0;
         }
 
+        public override void Restart()
+        {
+            base.Restart();
+            _timeSinceLastLoop = 0;
+        }
+
         protected override void OnTimeout()
         {
             onTimeout?.Invoke();

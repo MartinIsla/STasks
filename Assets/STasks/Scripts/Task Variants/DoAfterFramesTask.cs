@@ -12,6 +12,12 @@
             _targetFrames = settings.targetFrames;
         }
 
+        public override void Restart()
+        {
+            base.Restart();
+            _elapsedFrames = 0;
+        }
+
         protected override float GetProgress()
         {
             return (float)_elapsedFrames / _targetFrames;

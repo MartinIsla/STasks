@@ -67,15 +67,28 @@
         public readonly bool HasMaxDuration;
 
         protected readonly SAction action;
+        public readonly UpdateType UpdateType;
 
         private bool _isWaitingForDelay;
         private bool _taskStarted;
         private bool _isPaused;
         private float _elapsedTime;
 
-
         protected abstract void OnUpdate();
         protected abstract float GetProgress();
+
+
+        public virtual void Restart()
+        {
+            _elapsedTime = 0;
+            TimeSinceStart = 0;
+            _isWaitingForDelay = Delay > 0;
+            _taskStarted = false;
+            isDone = false;
+            _isPaused = false;
+
+            STasks.AddTask(this);
+        }
 
         public STask(in STaskSettings settings)
         {
@@ -83,6 +96,7 @@
 
             this.action = settings.action;
             this.MaxDuration = settings.maxDuration;
+            this.UpdateType = settings.updateType;
 
             _elapsedTime = 0;
 
@@ -244,6 +258,5 @@
             onTimeout += action;
             return this;
         }
-
     }
 }

@@ -8,5 +8,6 @@
         public float frequency;
         public float maxDuration;
         public int targetFrames;
+        public UpdateType updateType;
     }
 }

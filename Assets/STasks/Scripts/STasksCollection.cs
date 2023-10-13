@@ -13,9 +13,10 @@ namespace Koffie.SimpleTasks
 
         public void Update()
         {
+            STask task;
             for (int i = 0; i < tasks.Count; i++)
             {
-                STask task = tasks[i];
+                task = tasks[i];
                 while (task.isDone && i < tasks.Count)
                 {
                     task = tasks[i] = tasks[tasks.Count - 1];
